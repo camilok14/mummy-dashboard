@@ -40,11 +40,9 @@ export class AppComponent implements OnInit {
     return member;
   };
   updateData = ()=> {
-    this.http.get('http://localhost:3030/mummy_money').subscribe((res) => {
-      this.mummyMoney = res
-    });
     this.http.get('http://localhost:3030/members').subscribe((res) => {
       const mummy = this.getMember(res, 0)
+      this.mummyMoney = mummy.money;
       this.dataSource.data = [mummy];
       this.treeControl.dataNodes = this.dataSource.data;
       this.treeControl.expandAll();
