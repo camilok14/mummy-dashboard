@@ -14,7 +14,14 @@ export class AppComponent implements OnInit {
   treeControl = new NestedTreeControl<Member>(node => node.children);
   dataSource = new MatTreeNestedDataSource<Member>();
   private subscription: Subscription;
-  private mummyMoney;
+  private mummyMoney: number;
+  private currentWeek: number;
+  private average: number;
+  private ended = false;
+  private joined: number;
+  private eliminated: number;
+  private totalInvestors: number;
+  private totalMembers: number;
   constructor(private http: HttpClient) {
     this.dataSource.data = []
   }
@@ -40,7 +47,35 @@ export class AppComponent implements OnInit {
     return member;
   };
   updateData = ()=> {
-    this.http.get('http://localhost:3030/members').subscribe((res) => {
+    this.http.get('http://localhost:3030/timelapse').subscribe((res) => {
+      this.currentWeek = res['current_week'];
+      this.ended = res['program_ended'];
+      if (this.ended) {
+        this.subscription.unsubscribe();
+      }
+    })
+    this.http.get('http://localhost:3030/investors').subscribe((res: number) => {
+      this.totalInvestors = res
+    })
+    this.http.get('http://localhost:3030/members').subscribe((res: Array<any>) => {
+      let sum = 0;
+      let joined = 0;
+      let eliminated = 0;
+      res.forEach((x) => {
+        if (x.id !== 0) {
+          sum = sum + x.money;
+          if (x['week_joined'] == this.currentWeek) {
+            joined = joined + 1
+          }
+          if (x['week_eliminated'] == this.currentWeek) {
+            eliminated = eliminated + 1
+          }
+        }
+      });
+      this.totalMembers = res.length - 1;
+      this.joined = joined;
+      this.eliminated = eliminated;
+      this.average = sum / res.length;
       const mummy = this.getMember(res, 0)
       this.mummyMoney = mummy.money;
       this.dataSource.data = [mummy];

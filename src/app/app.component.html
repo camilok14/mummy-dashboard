@@ -1,36 +1,69 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
-  <h1>
-    Mummy has MM${{ mummyMoney }}
-  </h1>
+  <strong *ngIf="ended" style="color: red;">Program has ended, it is safe to escape</strong>
+  <table align="center">
+    <tr>
+      <td align="left">Mummy earned</td><td align="right">MM${{ mummyMoney }}</td>
+    </tr>
+    <tr>
+      <td align="left">Current Week</td><td align="right">{{ currentWeek }}</td>
+    </tr>
+    <tr style="color: blue;">
+      <td align="left">Members joined this week</td><td align="right">{{joined}}</td>
+    </tr>
+    <tr style="color: red;">
+      <td align="left">Members eliminated this week</td><td align="right">{{eliminated}}</td>
+    </tr>
+    <tr>
+      <td align="left">Average members earnings</td><td align="right">MM${{average}}</td>
+    </tr>
+    <tr>
+      <td align="left">Total members</td><td align="right">{{totalMembers}}</td>
+    </tr>
+    <tr>
+      <td align="left">Total investors not in the program</td><td align="right">{{totalInvestors}}</td>
+    </tr>
+  </table>
 </div>
-<div>
-  <mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl" class="tree">
-    <!-- This is the tree node template for leaf nodes -->
-    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
-      <li class="mat-tree-node">
-        <!-- use a disabled button to provide padding for tree leaf -->
-        <button mat-icon-button disabled></button>
-        {{node.id}}
-      </li>
-    </mat-tree-node>
-    <!-- This is the tree node template for expandable nodes -->
-    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
-      <li>
-        <div class="mat-tree-node">
-          <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.id">
-            <mat-icon class="mat-icon-rtl-mirror">
-              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-            </mat-icon>
-          </button>
-          {{node.id}}
-        </div>
-        <ul [class.tree-invisible]="!treeControl.isExpanded(node)">
-          <ng-container matTreeNodeOutlet></ng-container>
-        </ul>
-      </li>
-    </mat-nested-tree-node>
-  </mat-tree>
-</div>
+<table align="center">
+  <tr>
+    <th style="text-align:center">Members Tree</th>
+  </tr>
+  <tr>
+    <td>
+        <mat-tree #tree [dataSource]="dataSource" [treeControl]="treeControl" class="tree">
+            <!-- This is the tree node template for leaf nodes -->
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+              <li class="mat-tree-node">
+                <!-- use a disabled button to provide padding for tree leaf -->
+                <button mat-icon-button disabled></button>
+                <p [ngClass]="{'newMember': node['week_joined']==currentWeek, 'eliminatedMember':node['week_eliminated']==currentWeek }">
+                <strong>{{node.id}}</strong> &nbsp;&nbsp;&nbsp;&nbsp; MM${{node.money}} <sub *ngIf="!node.active">&nbsp;&nbsp;&nbsp;&nbsp;eliminated from program</sub>
+                </p>
+              </li>
+            </mat-tree-node>
+            <!-- This is the tree node template for expandable nodes -->
+            <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+              <li>
+                <div class="mat-tree-node">
+                  <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.id">
+                    <mat-icon class="mat-icon-rtl-mirror">
+                      {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                    </mat-icon>
+                  </button>
+                  <p [ngClass]="{'newMember': node['week_joined']==currentWeek, 'eliminatedMember':node['week_eliminated']==currentWeek }">
+                    <strong>{{node.id}}</strong> &nbsp;&nbsp;&nbsp;&nbsp; MM${{node.money}} <sub *ngIf="!node.active">&nbsp;&nbsp;&nbsp;&nbsp;eliminated from program</sub>
+                  </p>
+                </div>
+                <ul [class.tree-invisible]="!treeControl.isExpanded(node)">
+                  <ng-container matTreeNodeOutlet></ng-container>
+                </ul>
+              </li>
+            </mat-nested-tree-node>
+          </mat-tree>
+    </td>
+  </tr>
+
+</table>
 
 <router-outlet></router-outlet>

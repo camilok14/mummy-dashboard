@@ -8,3 +8,10 @@
   margin-bottom: 0;
   list-style-type: none;
 }
+.newMember {
+  color: blue;
+}
+
+.eliminatedMember {
+  color: red;
+}
