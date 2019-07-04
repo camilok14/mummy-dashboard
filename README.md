@@ -1,6 +1,11 @@
 # MummyDashboard
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.6.
+# docker
+```
+docker pull camilok14/mummy-dashboard
+docker run -it -p 4200:80 mummy-dashboard
+```
 
 ## Development server
 
