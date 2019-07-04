@@ -14,15 +14,15 @@ export class AppComponent implements OnInit {
   treeControl = new NestedTreeControl<Member>(node => node.children);
   dataSource = new MatTreeNestedDataSource<Member>();
   private subscription: Subscription;
-  private mummyMoney: number;
-  private currentWeek: number;
-  private average: number;
-  private ended = false;
-  private joined: number;
-  private eliminated: number;
-  private totalInvestors: number;
-  private totalMembers: number;
-  private started = false;
+  mummyMoney: number;
+  currentWeek: number;
+  average: number;
+  ended = false;
+  joined: number;
+  eliminated: number;
+  totalInvestors: number;
+  totalMembers: number;
+  started = false;
   constructor(private http: HttpClient) {
     this.dataSource.data = []
   }
