@@ -1,6 +1,7 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <strong *ngIf="ended" style="color: red;">Program has ended, it is safe to escape</strong>
+  <button *ngIf="!started" (click)="start()" mat-raised-button color="primary">Start getting data from running program</button>
   <table align="center">
     <tr>
       <td align="left">Mummy earned</td><td align="right">MM${{ mummyMoney }}</td>

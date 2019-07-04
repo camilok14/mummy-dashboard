@@ -22,16 +22,19 @@ export class AppComponent implements OnInit {
   private eliminated: number;
   private totalInvestors: number;
   private totalMembers: number;
+  private started = false;
   constructor(private http: HttpClient) {
     this.dataSource.data = []
   }
   hasChild = (_: number, member: Member) => {
     return !!member.children && member.children.length > 0
   };
-  ngOnInit() {
-    const source = interval(1000);
+  start() {
+    this.started = true;
+    const source = interval(2000);
     this.subscription = source.subscribe(this.updateData);
   }
+  ngOnInit() { }
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
